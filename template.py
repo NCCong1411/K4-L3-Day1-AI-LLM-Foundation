@@ -82,7 +82,7 @@ def call_openai(
         max_tokens=max_tokens,
     )
     latency = time.perf_counter() - start
-    return response.choices[0].message.content, latency
+    return response.choices[0].message.content or "", latency
 
 
 # ---------------------------------------------------------------------------
@@ -192,7 +192,7 @@ def chat_with_system_prompt(
     )
     latency = time.perf_counter() - start
 
-    return response.choices[0].message.content, latency
+    return response.choices[0].message.content or "", latency
 
 
 # ---------------------------------------------------------------------------
@@ -371,8 +371,8 @@ def retry_with_backoff(
 # ===========================================================================
 def run_assistant(
     persona: str,
-    get_input: Callable[[], str] = None,
-    max_turns: int = None,
+    get_input: Callable[[], str] | None = None,
+    max_turns: int | None = None,
 ) -> dict:
     """
     Trợ lý CLI hoàn chỉnh — ghép mọi thứ bạn đã xây trong Part 1–3.
